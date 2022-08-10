@@ -46,7 +46,6 @@ function Todolist() {
 
   }
 
-
   const addTask = (e) => {
     if (e.keyCode === 13 && nombreRef.value !== "") {
       setTask(task.concat(nombreRef.value));
@@ -59,9 +58,19 @@ function Todolist() {
     setTask([...task]);
   };
 
+  const deleteAll= () => {
 
+    fetch(urlApi, {
+      method: 'DELETE',
+      headers: {
+        'content-type': 'application/json'
+      }
+    }).then(response => response.json()
+    ).then(data => console.log(data)
 
+    ).catch(error => console.log(error))
 
+  }
 
 
   return (
@@ -76,7 +85,7 @@ function Todolist() {
                 ref={(r) => (nombreRef = r)}
                 type="text"
                 id="input"
-                class="list-group-item"
+                className="list-group-item"
                 placeholder="What needs to be done?"
               />
             </div>
