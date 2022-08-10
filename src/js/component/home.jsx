@@ -1,10 +1,51 @@
 import React from "react";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 //create your first component
 function Todolist() {
   let nombreRef = useRef(null);
   const [task, setTask] = useState ([]);
+
+  const [urlApi] = useState("http://assets.breatheco.de/apis/fake/todos/user/SussanHernandez")//declara api
+
+  useEffect(() => {
+    getTask(urlApi)
+  }, [])
+ 
+  const getTask = url => {
+    fetch(url)
+      .then(Response => Response.json())
+      .then(data => console.log(data))
+      .catch(error => console.log(error))
+  }
+  
+  const getUser = url => {
+    fetch(url, {
+      method: 'POST',
+      body: JSON.stringify([]),
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    })
+      .then(Response => Response.json())
+      .then(data => console.log(data.result))
+      .catch(error => console.log(error));
+  };
+  
+  const updateTask = (url, task) => {
+    fetch(url, {
+      method: 'PUT',
+      body: JSON.stringify(task),
+      headers: {
+        'content-type': 'application/json'
+      }
+    })
+    .then(response => response.json())
+    .then(data => console.log(data))
+    .catch(error => console.log(error))
+
+  }
+
 
   const addTask = (e) => {
     if (e.keyCode === 13 && nombreRef.value !== "") {
@@ -17,6 +58,11 @@ function Todolist() {
     task.splice(index,1);
     setTask([...task]);
   };
+
+
+
+
+
 
   return (
     <div className="container">
@@ -57,5 +103,4 @@ function Todolist() {
     </div>
   );
 }
-
 export default Todolist;
